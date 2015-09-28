@@ -1,14 +1,53 @@
 <html>
 <head>
 <title></title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style></style>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"></script>
+	<link rel="stylesheet" href="css/style.css"></script>
+	</script><script src="js/jquery-2.1.1.js"></script>
+	<script>
+    $(document).bind('mobileinit',function(){
+        $.mobile.pushStateEnabled = false;
+    });
+	</script>
+	<script src="js/jquery.mobile-1.4.5.js"></script>
 </head>
 <body>
-    <div data-role="page" id="home">
-        <div data-role="header" style="background-color:grey">
-        <h1>SD2799</h1>
+	<div data-role="page" id="home">
+		<div data-role="header">
+			<h1>BLUE WHISKER</h1>
+		</div>
+		<div data-role="main" class="ui-content">
+			<h2>Key :</h2>
+			<img src="Images/SymbolOfSurveyingTotalStation.jpg" height="25px" width="25px">  This is your Total Station.</img>
+			</br></br>
+			 <img src="Images/Prism.png" height="25px" width="25px">  This is your Prism.</img>
+			</br></br>
+			<h3>Drag and drop the tools to use!</h3>
+			</br></br>
+			<a href="#myCanvas" data-role="button">PLAY</a>
+		</div>
+	</div>
+
+	<div data-role="page" id="myCanvas">
+		<div data-role="main" class="ui-content">
+			<a href="#popUpDiv" data-rel="popup">OK</a>
+		</div>
+		<div data-role="popup" id="popUpDiv">
+			<p>Instructions</p>
+			</br>
+			<p>The 2 points are control points.</p>
+			</br>
+			<p>Setup on control point 1.</p>
+			</br>
+			<p>Use control point 2 as the back sight.</p>
+			</br>
+			<p>Layout point A 90 degrees from control line,</p>
+			</br>
+			<p>and 25.00 feet from control point 1.</p>
+		</div>
+	</div>
+
 </body>
 </html>
