@@ -3,15 +3,19 @@
 <title></title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- Style Sheets -->
 	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.css"></script>
 	<link rel="stylesheet" href="css/style.css"></script>
-	</script><script src="js/jquery-2.1.1.js"></script>
+	<!-- JavaScript  -->
+	<script src="js/jquery-2.1.1.js"></script>
 	<script>
-    $(document).bind('mobileinit',function(){
-        $.mobile.pushStateEnabled = false;
-    });
+		// Fix for Chrome file:// source update
+		$(document).bind('mobileinit',function(){
+			$.mobile.pushStateEnabled = false;
+		});
 	</script>
 	<script src="js/jquery.mobile-1.4.5.js"></script>
+	<script src="js/application.js"></script>
 </head>
 <body>
 	<div data-role="page" id="home">
@@ -22,29 +26,27 @@
 			<h2>Key :</h2>
 			<img src="images/SymbolOfSurveyingTotalStation.jpg" height="25px" width="25px">  This is your Total Station.</img>
 			</br></br>
-			 <img src="images/Prism.png" height="25px" width="25px">  This is your Prism.</img>
+			<img src="images/Prism.png" height="25px" width="25px">  This is your Prism.</img>
 			</br></br>
 			<h3>Drag and drop the tools to use!</h3>
 			</br></br>
-			<a href="#myCanvas" data-role="button">PLAY</a>
+			<a href="#canvasPage" data-role="button">PLAY</a>
 		</div>
 	</div>
 
-	<div data-role="page" id="myCanvas">
+	<div data-role="page" id="canvasPage">
 		<div data-role="main" class="ui-content">
-			<a href="#popUpDiv" data-rel="popup">OK</a>
+			<canvas id='myCanvas'></canvas>
+			<div id="controls">
+				<a href="#popUpDiv" data-rel="popup">OK</a>
+			</div>
 		</div>
 		<div data-role="popup" id="popUpDiv">
 			<p>Instructions</p>
-			</br>
 			<p>The 2 points are control points.</p>
-			</br>
 			<p>Setup on control point 1.</p>
-			</br>
 			<p>Use control point 2 as the back sight.</p>
-			</br>
 			<p>Layout point A 90 degrees from control line,</p>
-			</br>
 			<p>and 25.00 feet from control point 1.</p>
 		</div>
 	</div>
