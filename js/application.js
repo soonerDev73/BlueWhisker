@@ -22,15 +22,19 @@ $(document).ready(function() {
 
 		// Draw canvas border for the first time.
 		resizeCanvas();
+		controlPoints();
 	}
-
 	// Display custom canvas.
-	// In this case it's a blue, 5 pixel border that
+	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
-	function redraw() {
+	function controlPoints() {
 		context.strokeStyle = 'blue';
-		context.lineWidth = '5';
+		context.lineWidth = '4';
 		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+		context.beginPath();
+		context.arc(200, 80, 6, 0, 5 * Math.PI);
+		context.arc(200, 350, 6, 0, 5 * Math.PI);
+		context.fill();
 	}
 
 	// Runs each time the DOM window resize event fires.
@@ -39,7 +43,6 @@ $(document).ready(function() {
 	function resizeCanvas() {
 		htmlCanvas.width = window.innerWidth;
 		htmlCanvas.height = window.innerHeight;
-		redraw();
 	}
 
 	function loadImages(sources, callback) {
