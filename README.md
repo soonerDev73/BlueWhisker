@@ -1,8 +1,7 @@
 SD2799CapStone
 ==============
 
-
-# Developers
+## Developers
 
 * Brad Gustafson
 * Marilyn Moser
