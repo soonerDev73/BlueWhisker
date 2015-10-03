@@ -13,7 +13,7 @@ $(document).ready(function() {
 	// Start listening to resize events and
 	// draw canvas.
 	initialize();
-                
+
 	function initialize() {
 		// Register an event listener to
 		// call the resizeCanvas() function each time
@@ -41,7 +41,7 @@ $(document).ready(function() {
 		htmlCanvas.height = window.innerHeight;
 		redraw();
 	}
-	
+
 	function loadImages(sources, callback) {
 		var images = {};
 		var loadedImages = 0;
@@ -51,23 +51,20 @@ $(document).ready(function() {
 			numImages++;
 		}
 		for(var src in sources) {
-				images[src] = new Image();
-				images[src].onload = function() {
-			if(++loadedImages >= numImages) {
-				callback(images);
-			}
-				};
+			images[src] = new Image();
+			images[src].onload = function() {
+				if(++loadedImages >= numImages) {
+					callback(images);
+				}
+			};
 			images[src].src = sources[src];
 		}
 	}
 
-		loadImages(sources, function(images) {
-			context.drawImage(images.totalStation, 10, 25, 25, 25);
-			context.drawImage(images.prism, 10, 75, 25, 25);
-		});
+	loadImages(sources, function(images) {
+		context.drawImage(images.totalStation, 10, 25, 25, 25);
+		context.drawImage(images.prism, 10, 75, 25, 25);
+	});
 
-	
 });
 
-
- 
