@@ -21,12 +21,12 @@ $(document).ready(function() {
 
 		// Draw canvas border for the first time.
 		resizeCanvas();
+		controlPoints();
 	}
-
 	// Display custom canvas.
 	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
-	function redraw() {
+	function controlPoints() {
 		context.strokeStyle = 'blue';
 		context.lineWidth = '4';
 		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
@@ -42,7 +42,7 @@ $(document).ready(function() {
 	function resizeCanvas() {
 		htmlCanvas.width = window.innerWidth;
 		htmlCanvas.height = window.innerHeight;
-		redraw();
+		
 	}
 
 });
