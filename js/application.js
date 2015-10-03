@@ -7,7 +7,8 @@ $(document).ready(function() {
 	// Obtain a graphics context on the
 	// canvas element for drawing.
 	var context = htmlCanvas.getContext('2d');
-
+	var c = document.getElementById('myCanvas');
+	
 	// Start listening to resize events and
 	// draw canvas.
 	initialize();
@@ -23,12 +24,16 @@ $(document).ready(function() {
 	}
 
 	// Display custom canvas.
-	// In this case it's a blue, 5 pixel border that
+	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
 	function redraw() {
 		context.strokeStyle = 'blue';
-		context.lineWidth = '5';
+		context.lineWidth = '4';
 		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+		context.beginPath();
+		context.arc(200, 80, 6, 0, 5 * Math.PI);
+		context.arc(200, 350, 6, 0, 5 * Math.PI);
+		context.fill();
 	}
 
 	// Runs each time the DOM window resize event fires.
