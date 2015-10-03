@@ -3,6 +3,10 @@ $(document).ready(function() {
 	// Obtain a reference to the canvas element
 	// using its id.
 	var htmlCanvas = document.getElementById('myCanvas');
+	var sources = {
+		totalStation:'images/SymbolOfSurveyingTotalStation.jpg',
+		prism:'images/Prism.png'
+	};
 	// Obtain a graphics context on the
 	// canvas element for drawing.
 	var context = htmlCanvas.getContext('2d');
@@ -39,35 +43,28 @@ $(document).ready(function() {
 	}
 	
 	function loadImages(sources, callback) {
-        var images = {};
-        var loadedImages = 0;
-        var numImages = 0;
-        // get num of sources
-            for(var src in sources) {
-                numImages++;
-            }
-            for(var src in sources) {
-                    images[src] = new Image();
-                    images[src].onload = function() {
-                if(++loadedImages >= numImages) {
-                    callback(images);
-                }
-                    };
-                images[src].src = sources[src];
-            }
-        }
-        var canvas = document.getElementById('myCanvas');
-        var context = canvas.getContext('2d');
+		var images = {};
+		var loadedImages = 0;
+		var numImages = 0;
+		// get num of sources
+		for(var src in sources) {
+			numImages++;
+		}
+		for(var src in sources) {
+				images[src] = new Image();
+				images[src].onload = function() {
+			if(++loadedImages >= numImages) {
+				callback(images);
+			}
+				};
+			images[src].src = sources[src];
+		}
+	}
 
-        var sources = {
-            totalStation:'images/SymbolOfSurveyingTotalStation.jpg',
-            prism:'images/Prism.png'
-        };
-
-        loadImages(sources, function(images) {
-            context.drawImage(images.totalStation, 10, 25, 25, 25);
-            context.drawImage(images.prism, 10, 75, 25, 25);
-        });
+		loadImages(sources, function(images) {
+			context.drawImage(images.totalStation, 10, 25, 25, 25);
+			context.drawImage(images.prism, 10, 75, 25, 25);
+		});
 
 	
 });
