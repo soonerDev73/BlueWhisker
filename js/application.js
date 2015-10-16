@@ -32,17 +32,11 @@ $(document).ready(function() {
 		context.lineWidth = '4';
 		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
 		context.beginPath();
-		context.arc(200, 80, 6, 0, 5 * Math.PI);
-		context.arc(200, 350, 6, 0, 5 * Math.PI);
-		context.fill();
-	}
-
-	// Runs each time the DOM window resize event fires.
-	// Resets the canvas dimensions to match window,
-	// then draws the new borders accordingly.
-	function resizeCanvas() {
-		htmlCanvas.width = window.innerWidth;
-		htmlCanvas.height = window.innerHeight;
+		context.arc(200, 80, 3, 0, 5 * Math.PI);
+		context.label ='CP1';
+		context.arc(200, 350, 3, 0, 5 * Math.PI);
+		context.fill();	
+	
 	}
 
 	function loadImages(sources, callback) {
@@ -65,9 +59,23 @@ $(document).ready(function() {
 	}
 
 	loadImages(sources, function(images) {
-		context.drawImage(images.totalStation, 10, 25, 25, 25);
-		context.drawImage(images.prism, 10, 75, 25, 25);
+		context.drawImage(images.totalStation, 10, 25, 40, 40);
+		context.drawImage(images.prism, 10, 75, 40, 40);
 	});
+	
+	// Runs each time the DOM window resize event fires.
+	// Resets the canvas dimensions to match window,
+	// then draws the new borders accordingly.
+	function resizeCanvas() {
+		htmlCanvas.width = window.innerWidth;
+		htmlCanvas.height = window.innerHeight;
+		controlPoints();
+			loadImages(sources, function(images) {
+		context.drawImage(images.totalStation, 10, 25, 40, 40);
+		context.drawImage(images.prism, 10, 75, 40, 40);
+	});
+		
+	}
 
 });
 
