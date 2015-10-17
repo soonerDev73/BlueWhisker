@@ -3,7 +3,7 @@ $(document).ready(function() {
 	// Obtain a reference to the canvas element
 	// using its id.
 	var canvas = document.getElementById('myCanvas');
-	var context = htmlCanvas.getContext('2d');
+	var context = canvas.getContext('2d');
 	// Our image resources
 	var sources = {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
@@ -83,6 +83,7 @@ $(document).ready(function() {
 		intervalId = setInterval(draw, 10);
 	}
 	function draw() {
+		clearCanvas();
 		controlPoints();
 		loadImages();
 		console.log(intervalId);
