@@ -64,8 +64,12 @@ $(document).ready(function() {
 
 	loadImages(sources, function(images) {
 		context.drawImage(images.totalStation, 10, 25, 40, 40);
-		context.drawImage(images.prism, 10, 75, 40, 40);
-		context.lineTo 
+		context.drawImage(images.prism, 10, 305, 40, 40);
+		context.setLineDash([5, 25]);
+		context.beginPath();
+		context.moveTo(30, 55);
+		context.lineTo(30, 325);
+		context.stroke();
 	});
 	
 	// Runs each time the DOM window resize event fires.
@@ -77,7 +81,7 @@ $(document).ready(function() {
 		controlPoints();
 		loadImages(sources, function(images) {
 			context.drawImage(images.totalStation, 10, 25, 40, 40);
-			context.drawImage(images.prism, 10, 75, 40, 40);
+			context.drawImage(images.prism, 10, 305, 40, 40);
 		});
 	}
 });
