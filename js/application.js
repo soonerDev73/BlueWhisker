@@ -2,7 +2,7 @@
 $(document).ready(function() {
 	// Obtain a reference to the canvas element
 	// using its id.
-	var htmlCanvas = document.getElementById('myCanvas');
+	var canvas = document.getElementById('myCanvas');
 	var sources = {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
@@ -11,7 +11,8 @@ $(document).ready(function() {
 
 	// Obtain a graphics context on the
 	// canvas element for drawing.
-	var context = htmlCanvas.getContext('2d');
+	var context = canvas.getContext('2d');
+	var intervalId = 0;
 	// Start listening to resize events and
 	// draw canvas.
 	initialize();
@@ -20,10 +21,15 @@ $(document).ready(function() {
 		// Register an event listener to
 		// call the resizeCanvas() function each time
 		// the window is resized.
+		resizeCanvas();
 		window.addEventListener('resize', resizeCanvas, false);
 		// Draw canvas border for the first time.
-		resizeCanvas();
+		intervalId = setInterval(draw, 10);
+	}
+	function draw() {
 		controlPoints();
+		loadImages();
+		console.log(intervalId);
 	}
 
 	// Display custom canvas.
@@ -68,10 +74,12 @@ $(document).ready(function() {
 	// Resets the canvas dimensions to match window,
 	// then draws the new borders accordingly.
 	function resizeCanvas() {
-		htmlCanvas.width = window.innerWidth;
-		htmlCanvas.height = window.innerHeight;
-		controlPoints();
-		loadImages();
+		canvas.width = window.innerWidth;
+		canvas.height = window.innerHeight;
 	};
+	
+	function clearCanvas() {
+		context.clearRect(0, 0, canvas.width, canvas.height) 
+	}
 });
 
