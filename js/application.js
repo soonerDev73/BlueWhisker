@@ -38,6 +38,10 @@ $(document).ready(function() {
 		context.label ='CP1';
 		context.arc(200, 350, 3, 0, 5 * Math.PI);
 		context.fill();
+		context.font = "15px Arial";
+		context.fillText(" CP2", 160, 90);
+		context.font = "15px Arial";
+		context.fillText(" CP1", 160, 360);
 	}
 
 	function loadImages() {
@@ -55,6 +59,7 @@ $(document).ready(function() {
 		context.beginPath();
 		context.moveTo(sources.station.x + (imgSize.x / 2),sources.station.y + imgSize.y);
 		context.lineTo(sources.prism.x + (imgSize.x / 2),sources.prism.y + (imgSize.y / 2) );
+		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
 	}
@@ -68,6 +73,5 @@ $(document).ready(function() {
 		controlPoints();
 		loadImages();
 	};
-
 });
 
