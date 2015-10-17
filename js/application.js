@@ -7,7 +7,7 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
-	var imgSize = {x: 45, y: 45};
+	var imgSize = {x: 46, y: 46};
 
 	// Obtain a graphics context on the
 	// canvas element for drawing.
@@ -51,6 +51,12 @@ $(document).ready(function() {
 			image.src = sources[n].src;
 			image.onload = drawIt(image, sources[n]);
 		}
+		// Draw our line between the images
+		context.beginPath();
+		context.moveTo(sources.station.x + (imgSize.x / 2),sources.station.y + imgSize.y);
+		context.lineTo(sources.prism.x + (imgSize.x / 2),sources.prism.y + (imgSize.y / 2) );
+		context.strokeStyle="blue";
+		context.stroke();
 	}
 
 	// Runs each time the DOM window resize event fires.
@@ -61,7 +67,7 @@ $(document).ready(function() {
 		htmlCanvas.height = window.innerHeight;
 		controlPoints();
 		loadImages();
-	}
+	};
 
 });
 
