@@ -4,9 +4,11 @@ $(document).ready(function() {
 	// using its id.
 	var htmlCanvas = document.getElementById('myCanvas');
 	var sources = {
-		totalStation:'images/SymbolOfSurveyingTotalStation.jpg',
-		prism:'images/Prism.png'
+		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
+		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
+	var imgSize = {x: 45, y: 45};
+
 	// Obtain a graphics context on the
 	// canvas element for drawing.
 	var context = htmlCanvas.getContext('2d');
@@ -19,11 +21,11 @@ $(document).ready(function() {
 		// call the resizeCanvas() function each time
 		// the window is resized.
 		window.addEventListener('resize', resizeCanvas, false);
-
 		// Draw canvas border for the first time.
 		resizeCanvas();
 		controlPoints();
 	}
+
 	// Display custom canvas.
 	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
@@ -35,34 +37,22 @@ $(document).ready(function() {
 		context.arc(200, 80, 3, 0, 5 * Math.PI);
 		context.label ='CP1';
 		context.arc(200, 350, 3, 0, 5 * Math.PI);
-		context.fill();	
-	
+		context.fill();
 	}
 
-	function loadImages(sources, callback) {
-		var images = {};
-		var loadedImages = 0;
-		var numImages = 0;
+	function loadImages() {
+		var drawIt = function(img,n){
+				context.drawImage(img, n.x, n.y, imgSize.x, imgSize.y);
+		};
 		// get num of sources
-		for(var src in sources) {
-			numImages++;
-		}
-		for(var src in sources) {
-			images[src] = new Image();
-			images[src].onload = function() {
-				if(++loadedImages >= numImages) {
-					callback(images);
-				}
-			};
-			images[src].src = sources[src];
+		for(var n in sources) {
+			// images[src] = new Image();
+			var image = new Image();
+			image.src = sources[n].src;
+			image.onload = drawIt(image, sources[n]);
 		}
 	}
 
-	loadImages(sources, function(images) {
-		context.drawImage(images.totalStation, 10, 25, 40, 40);
-		context.drawImage(images.prism, 10, 75, 40, 40);
-	});
-	
 	// Runs each time the DOM window resize event fires.
 	// Resets the canvas dimensions to match window,
 	// then draws the new borders accordingly.
@@ -70,11 +60,7 @@ $(document).ready(function() {
 		htmlCanvas.width = window.innerWidth;
 		htmlCanvas.height = window.innerHeight;
 		controlPoints();
-			loadImages(sources, function(images) {
-		context.drawImage(images.totalStation, 10, 25, 40, 40);
-		context.drawImage(images.prism, 10, 75, 40, 40);
-	});
-		
+		loadImages();
 	}
 
 });
