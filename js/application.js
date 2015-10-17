@@ -36,10 +36,11 @@ $(document).ready(function() {
 		context.label ='CP1';
 		context.arc(200, 350, 3, 0, 5 * Math.PI);
 		context.fill();	
-		context.font = "15px Georgia";
-		context.fillText(" CP2", 175, 100);
-		context.font = "15px Georgia";
-		context.fillText(" CP1", 175, 370); 
+		context.font = "15px Arial";
+		context.fillText(" CP2", 160, 90);
+		context.font = "15px Arial";
+		context.fillText(" CP1", 160, 360); 
+
 	}
 
 	function loadImages(sources, callback) {
@@ -64,6 +65,7 @@ $(document).ready(function() {
 	loadImages(sources, function(images) {
 		context.drawImage(images.totalStation, 10, 25, 40, 40);
 		context.drawImage(images.prism, 10, 75, 40, 40);
+		context.lineTo 
 	});
 	
 	// Runs each time the DOM window resize event fires.
@@ -75,7 +77,7 @@ $(document).ready(function() {
 		controlPoints();
 		loadImages(sources, function(images) {
 			context.drawImage(images.totalStation, 10, 25, 40, 40);
-			ontext.drawImage(images.prism, 10, 75, 40, 40);
+			context.drawImage(images.prism, 10, 75, 40, 40);
 		});
 	}
 });
