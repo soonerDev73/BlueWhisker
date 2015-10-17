@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 	loadImages(sources, function(images) {
 		context.drawImage(images.totalStation, 10, 25, 40, 40);
-		context.drawImage(images.prism, 10, 75, 40, 40);
+		context.drawImage(images.prism, 10, 150, 40, 40);
 	});
 	
 	// Runs each time the DOM window resize event fires.
@@ -71,8 +71,13 @@ $(document).ready(function() {
 		htmlCanvas.height = window.innerHeight;
 		controlPoints();
 			loadImages(sources, function(images) {
-		context.drawImage(images.totalStation, 10, 25, 40, 40);
-		context.drawImage(images.prism, 10, 75, 40, 40);
+				context.beginPath();
+				context.lineTo(30,27);
+				context.lineTo(30,150);
+				context.strokeStyle="blue";
+				context.stroke();
+				context.drawImage(images.totalStation, 10, 25, 40, 40);
+				context.drawImage(images.prism, 10,150,40,40);
 	});
 		
 	}
