@@ -49,7 +49,7 @@ $(document).ready(function() {
 			// images[src] = new Image();
 			var image = new Image();
 			image.src = sources[n].src;
-			image.onload = drawIt(image, sources[n]); 			
+			image.onload = drawIt(image, sources[n]);
 		}
 	}
 
@@ -61,10 +61,6 @@ $(document).ready(function() {
 		htmlCanvas.height = window.innerHeight;
 		controlPoints();
 		loadImages();
-		// loadImages(sources, function(images) {
-		// 	context.drawImage(images.totalStation, 10, 25, imgSize.x, imgSize.y);
-		// 	context.drawImage(images.prism, 10, 75, imgSize.x, imgSize.y);
-		// });
 	}
 
 });
