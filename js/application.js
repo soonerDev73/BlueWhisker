@@ -3,26 +3,50 @@ $(document).ready(function() {
 	// Obtain a reference to the canvas element
 	// using its id.
 	var canvas = document.getElementById('myCanvas');
+	var context = htmlCanvas.getContext('2d');
+	// Our image resources
 	var sources = {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
 	var imgSize = {x: 46, y: 46};
-
-	// Obtain a graphics context on the
-	// canvas element for drawing.
-	var context = canvas.getContext('2d');
+	var mouse = {};
 	var intervalId = 0;
 	// Start listening to resize events and
 	// draw canvas.
 	initialize();
 
+	function mDown(){
+		console.log("Mouse has been pressed down at " + mouse.x + ", " + mouse.y);
+	}
+
+	function mUp(){
+		console.log("Mouse has been released at " + mouse.x + ", " + mouse.y);
+	}
+
+	function getMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
+  }
+
 	function initialize() {
-		// Register an event listener to
-		// call the resizeCanvas() function each time
 		// the window is resized.
 		resizeCanvas();
+
+		// Add event listener to get out mouse position
+		canvas.addEventListener('mousemove', function(evt) { mouse = getMousePos(evt); });
+		// Block text selection on doubleclick
+		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
+		// Register an event listener to resize window
 		window.addEventListener('resize', resizeCanvas, false);
+
+		// Add our own mouse events
+		canvas.onmousedown = mDown;
+		canvas.onmouseup = mUp;
+
 		// Draw canvas border for the first time.
 		intervalId = setInterval(draw, 10);
 	}
