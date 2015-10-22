@@ -6,7 +6,7 @@ $(document).ready(function() {
 	var context = canvas.getContext('2d');
 	// Our image resources
 	var sources = {
-		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
+		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
 	var images = [];
