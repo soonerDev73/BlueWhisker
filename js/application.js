@@ -4,7 +4,7 @@ $(document).ready(function() {
 	// using its id.
 	var htmlCanvas = document.getElementById('myCanvas');
 	var sources = {
-		station: { src: 'images/SymbolOfSurveyingTotalStation.jpg', x: 10, y: 25 },
+		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
 	var imgSize = {x: 46, y: 46};
