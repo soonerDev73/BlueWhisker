@@ -13,12 +13,15 @@ $(document).ready(function() {
 		CP1: { x: 200, y: 350 },
 		CP2: { x: 200, y: 80 }
 	};
+	var zSet = { sx: 0, sy: 0, px: 0, py: 0};
+	var isZSetActive = false;
 	var imgSize = {x: 46, y: 46};
 	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
 	// Start listening to resize events and
 	var isDrag = false;
 	var mSelect;
+
 
 	// draw canvas.
 	initialize();
@@ -76,6 +79,9 @@ $(document).ready(function() {
 		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
 		// Register an event listener to resize window
 		window.addEventListener('resize', resizeCanvas, false);
+		// Listen for clicking out zeroset button
+		var zeroSet = document.getElementById("zeroSet");
+		zeroSet.addEventListener( 'click', displayZeroSet, true );
 
 		// Add our own mouse events
 		canvas.onmousedown = mDown;
@@ -141,6 +147,16 @@ $(document).ready(function() {
 		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
+		
+		if(isZSetActive) {
+			// Draw our zeroSet
+			context.beginPath();
+			context.moveTo(zSet.sx,zSet.sy);
+			context.lineTo(zSet.px,zSet.py);
+			context.lineWidth = '4';
+			context.strokeStyle="black";
+			context.stroke();
+		}
 	}
 
 	function getPrismXY(){
@@ -167,9 +183,16 @@ $(document).ready(function() {
 	function clearCanvas() {
 		context.clearRect(0, 0, canvas.width, canvas.height)
 	}
-
-	function zeroSet() {
-
+	
+	function displayZeroSet() {
+	
+		// Look up Tenary Operators
+		isZSetActive = isZSetActive ? false : true;
+		zSet.sx = sources.station.x + (imgSize.x / 2);
+		zSet.sy = sources.station.y + imgSize.y;
+		zSet.px = sources.prism.x + (imgSize.x / 2);
+		zSet.py = sources.prism.y + (imgSize.y / 2);
 	}
+
 });
 
