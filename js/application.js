@@ -21,11 +21,12 @@ $(document).ready(function() {
 	// Start listening to resize events and
 	var isDrag = false;
 	var mSelect;
+	var disDisplay = document.getElementById("dist");
 	var x1 = sources.prism.x + (imgSize.x / 2);
 	var y1 = sources.prism.y + (imgSize.y / 2);
 	var x2 = sources.station.x + (imgSize.x / 2);
 	var y2 = sources.station.y + (imgSize.y / 2);
-	
+
 
 
 	// draw canvas.
@@ -119,14 +120,18 @@ $(document).ready(function() {
 			context.fillText(cp, control[cp].x + 10, control[cp].y);
 		}
 	}
-	
+
 	function distance() {
-// 		var d = Math.sqrt((x2-=x1)*x2+(y2-=y1)*y2);
-		var dx = (sources.prism.x + (imgSize.x / 2) - sources.station.x + (imgSize.x / 2));
-		var dy = (sources.prism.y + (imgSize.y / 2) - sources.station.y + (imgSize.y + 2));
+		var dsXY = getStationXY();
+		var dpXY = getPrismXY();
+
+		var dx = dpXY.x - dsXY.x;
+		var dy = dpXY.y - dsXY.y;
+
 		var d = Math.sqrt((dx*dx) + (dy*dy));
-		d = Math.round((d * 100) / 100).toFixed(2);
-		document.getElementById("dist").innerHTML = d / 12;
+		// d = Math.round((d * 100) / 100).toFixed(2);
+		d = d / 12;
+		disDisplay.innerHTML = d.toFixed(2);
 	}
 
 	function loadImages() {
