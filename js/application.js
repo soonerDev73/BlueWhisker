@@ -147,7 +147,7 @@ $(document).ready(function() {
 		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
-		
+
 		if(isZSetActive) {
 			// Draw our zeroSet
 			context.beginPath();
@@ -183,9 +183,9 @@ $(document).ready(function() {
 	function clearCanvas() {
 		context.clearRect(0, 0, canvas.width, canvas.height)
 	}
-	
+
 	function displayZeroSet() {
-	
+
 		// Look up Tenary Operators
 		isZSetActive = isZSetActive ? false : true;
 		zSet.sx = sources.station.x + (imgSize.x / 2);
