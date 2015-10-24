@@ -11,7 +11,7 @@ $(document).ready(function() {
 	};
 	var images = [];
 	var imgSize = {x: 46, y: 46};
-	var mouse = {};
+	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
 	// Start listening to resize events and
 	var isDrag = false;
@@ -33,14 +33,17 @@ $(document).ready(function() {
 
 	function mMove(e){
 		if(isDrag){
-			sources[mSelect].x = mouse.x;
-			sources[mSelect].y = mouse.y;
+			sources[mSelect].x = mouse.x - mouse.xOff;
+			sources[mSelect].y = mouse.y - mouse.yOff;
 		}
 	}
 
 	function mDown(){
 		for(var src in sources){
 			if(isOverImage(src)){
+				mouse.xOff = mouse.x - sources[src].x;
+				mouse.yOff = mouse.y - sources[src].y;
+
 				mSelect = src;
 				isDrag = true;
 				canvas.onmousemove = mMove;
@@ -58,10 +61,8 @@ $(document).ready(function() {
 
 	function getMousePos(evt) {
 		var rect = canvas.getBoundingClientRect();
-		return {
-			x: evt.clientX - rect.left,
-			y: evt.clientY - rect.top
-		};
+		mouse.x = evt.clientX - rect.left;
+		mouse.y = evt.clientY - rect.top;
 	}
 
 	function initialize() {
@@ -69,7 +70,7 @@ $(document).ready(function() {
 		resizeCanvas();
 
 		// Add event listener to get out mouse position
-		canvas.addEventListener('mousemove', function(evt) { mouse = getMousePos(evt); });
+		canvas.addEventListener('mousemove', function(evt) { getMousePos(evt); });
 		// Block text selection on doubleclick
 		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
 		// Register an event listener to resize window
