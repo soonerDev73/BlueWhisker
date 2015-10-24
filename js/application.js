@@ -9,13 +9,15 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
+	var control = {
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 80 }
+	};
 	var imgSize = {x: 46, y: 46};
 	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
 	// Start listening to resize events and
 	var isDrag = false;
-	var mOffsetX;
-	var mOffsetY;
 	var mSelect;
 
 	// draw canvas.
@@ -82,6 +84,7 @@ $(document).ready(function() {
 		// Draw canvas border for the first time.
 		intervalId = setInterval(draw, 10);
 	}
+
 	function draw() {
 		clearCanvas();
 		controlPoints();
@@ -93,18 +96,28 @@ $(document).ready(function() {
 	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
 	function controlPoints() {
-		context.strokeStyle = 'blue';
-		context.lineWidth = '4';
-		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-		context.beginPath();
-		context.arc(200, 80, 3, 0, 5 * Math.PI);
-		context.label ='CP1';
-		context.arc(200, 350, 3, 0, 5 * Math.PI);
-		context.fill();
-		context.font = "15px Arial";
-		context.fillText(" CP2", 160, 90);
-		context.font = "15px Arial";
-		context.fillText(" CP1", 160, 360);
+
+		for( var cp in control ){
+			context.beginPath();
+			context.arc(control[cp].x, control[cp].y, 3, 0, 5 * Math.PI);
+			context.label = cp;
+			context.fill();
+			context.font = "15px Arial";
+			context.fillText(cp, control[cp].x + 10, control[cp].y);
+		}
+
+		// context.strokeStyle = 'blue';
+		// context.lineWidth = '4';
+		// context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+		// context.beginPath();
+		// context.arc(200, 80, 3, 0, 5 * Math.PI);
+		// context.label ='CP1';
+		// context.arc(200, 350, 3, 0, 5 * Math.PI);
+		// context.fill();
+		// context.font = "15px Arial";
+		// context.fillText(" CP2", 160, 90);
+		// context.font = "15px Arial";
+		// context.fillText(" CP1", 160, 360);
 	}
 
 	function loadImages() {
