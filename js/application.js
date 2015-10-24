@@ -9,14 +9,15 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
-	var images = [];
+	var control = {
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 80 }
+	};
 	var imgSize = {x: 46, y: 46};
-	var mouse = {};
+	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
 	// Start listening to resize events and
 	var isDrag = false;
-	var mOffsetX;
-	var mOffsetY;
 	var mSelect;
 
 	// draw canvas.
@@ -33,14 +34,17 @@ $(document).ready(function() {
 
 	function mMove(e){
 		if(isDrag){
-			sources[mSelect].x = mouse.x;
-			sources[mSelect].y = mouse.y;
+			sources[mSelect].x = mouse.x - mouse.xOff;
+			sources[mSelect].y = mouse.y - mouse.yOff;
 		}
 	}
 
 	function mDown(){
 		for(var src in sources){
 			if(isOverImage(src)){
+				mouse.xOff = mouse.x - sources[src].x;
+				mouse.yOff = mouse.y - sources[src].y;
+
 				mSelect = src;
 				isDrag = true;
 				canvas.onmousemove = mMove;
@@ -58,10 +62,8 @@ $(document).ready(function() {
 
 	function getMousePos(evt) {
 		var rect = canvas.getBoundingClientRect();
-		return {
-			x: evt.clientX - rect.left,
-			y: evt.clientY - rect.top
-		};
+		mouse.x = evt.clientX - rect.left;
+		mouse.y = evt.clientY - rect.top;
 	}
 
 	function initialize() {
@@ -69,7 +71,7 @@ $(document).ready(function() {
 		resizeCanvas();
 
 		// Add event listener to get out mouse position
-		canvas.addEventListener('mousemove', function(evt) { mouse = getMousePos(evt); });
+		canvas.addEventListener('mousemove', function(evt) { getMousePos(evt); });
 		// Block text selection on doubleclick
 		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
 		// Register an event listener to resize window
@@ -82,6 +84,7 @@ $(document).ready(function() {
 		// Draw canvas border for the first time.
 		intervalId = setInterval(draw, 10);
 	}
+
 	function draw() {
 		clearCanvas();
 		controlPoints();
@@ -93,18 +96,28 @@ $(document).ready(function() {
 	// In this case it's a blue, 4 pixel border that
 	// resizes along with the browser window.
 	function controlPoints() {
-		context.strokeStyle = 'blue';
-		context.lineWidth = '4';
-		context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-		context.beginPath();
-		context.arc(200, 80, 3, 0, 5 * Math.PI);
-		context.label ='CP1';
-		context.arc(200, 350, 3, 0, 5 * Math.PI);
-		context.fill();
-		context.font = "15px Arial";
-		context.fillText(" CP2", 160, 90);
-		context.font = "15px Arial";
-		context.fillText(" CP1", 160, 360);
+
+		for( var cp in control ){
+			context.beginPath();
+			context.arc(control[cp].x, control[cp].y, 3, 0, 5 * Math.PI);
+			context.label = cp;
+			context.fill();
+			context.font = "15px Arial";
+			context.fillText(cp, control[cp].x + 10, control[cp].y);
+		}
+
+		// context.strokeStyle = 'blue';
+		// context.lineWidth = '4';
+		// context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
+		// context.beginPath();
+		// context.arc(200, 80, 3, 0, 5 * Math.PI);
+		// context.label ='CP1';
+		// context.arc(200, 350, 3, 0, 5 * Math.PI);
+		// context.fill();
+		// context.font = "15px Arial";
+		// context.fillText(" CP2", 160, 90);
+		// context.font = "15px Arial";
+		// context.fillText(" CP1", 160, 360);
 	}
 
 	function loadImages() {
@@ -113,19 +126,34 @@ $(document).ready(function() {
 		};
 		// get num of sources
 		for(var n in sources) {
-			// images[src] = new Image();
 			var image = new Image();
 			image.src = sources[n].src;
 			image.onload = drawIt(image, sources[n]);
-			images.push(image);
 		}
+
+		var sXY = getStationXY();
+		var pXY = getPrismXY();
+
 		// Draw our line between the images
 		context.beginPath();
-		context.moveTo(sources.station.x + (imgSize.x / 2),sources.station.y + imgSize.y);
-		context.lineTo(sources.prism.x + (imgSize.x / 2),sources.prism.y + (imgSize.y / 2) );
+		context.moveTo( sXY.x, sXY.y );
+		context.lineTo( pXY.x, pXY.y );
 		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
+	}
+
+	function getPrismXY(){
+		return {
+			x: sources.prism.x + (imgSize.x / 2),
+			y: sources.prism.y + (imgSize.y / 2)
+		}
+	}
+
+	function getStationXY(){
+		return {
+			x: sources.station.x + (imgSize.x / 2),
+			y: sources.station.y + imgSize.y }
 	}
 
 	// Runs each time the DOM window resize event fires.
@@ -135,9 +163,9 @@ $(document).ready(function() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 	};
-	
+
 	function clearCanvas() {
-		context.clearRect(0, 0, canvas.width, canvas.height) 
+		context.clearRect(0, 0, canvas.width, canvas.height)
 	}
 });
 
