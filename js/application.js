@@ -9,7 +9,6 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
-	var images = [];
 	var imgSize = {x: 46, y: 46};
 	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
@@ -114,19 +113,34 @@ $(document).ready(function() {
 		};
 		// get num of sources
 		for(var n in sources) {
-			// images[src] = new Image();
 			var image = new Image();
 			image.src = sources[n].src;
 			image.onload = drawIt(image, sources[n]);
-			images.push(image);
 		}
+
+		var sXY = getStationXY();
+		var pXY = getPrismXY();
+
 		// Draw our line between the images
 		context.beginPath();
-		context.moveTo(sources.station.x + (imgSize.x / 2),sources.station.y + imgSize.y);
-		context.lineTo(sources.prism.x + (imgSize.x / 2),sources.prism.y + (imgSize.y / 2) );
+		context.moveTo( sXY.x, sXY.y );
+		context.lineTo( pXY.x, pXY.y );
 		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
+	}
+
+	function getPrismXY(){
+		return {
+			x: sources.prism.x + (imgSize.x / 2),
+			y: sources.prism.y + (imgSize.y / 2)
+		}
+	}
+
+	function getStationXY(){
+		return {
+			x: sources.station.x + (imgSize.x / 2),
+			y: sources.station.y + imgSize.y }
 	}
 
 	// Runs each time the DOM window resize event fires.
@@ -136,9 +150,9 @@ $(document).ready(function() {
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 	};
-	
+
 	function clearCanvas() {
-		context.clearRect(0, 0, canvas.width, canvas.height) 
+		context.clearRect(0, 0, canvas.width, canvas.height)
 	}
 });
 
