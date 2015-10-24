@@ -27,6 +27,7 @@ $(document).ready(function() {
 	initialize();
 
 	function isOverImage(sName){
+		if(isZSetActive && sName === "station" ){ return false; }
 		if(mouse.x >= sources[sName].x && mouse.x <= (sources[sName].x + imgSize.x)){
 			if(mouse.y >= sources[sName].y && mouse.y <= (sources[sName].y + imgSize.y)){
 				return true;
@@ -111,19 +112,6 @@ $(document).ready(function() {
 			context.font = "15px Arial";
 			context.fillText(cp, control[cp].x + 10, control[cp].y);
 		}
-
-		// context.strokeStyle = 'blue';
-		// context.lineWidth = '4';
-		// context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-		// context.beginPath();
-		// context.arc(200, 80, 3, 0, 5 * Math.PI);
-		// context.label ='CP1';
-		// context.arc(200, 350, 3, 0, 5 * Math.PI);
-		// context.fill();
-		// context.font = "15px Arial";
-		// context.fillText(" CP2", 160, 90);
-		// context.font = "15px Arial";
-		// context.fillText(" CP1", 160, 360);
 	}
 
 	function loadImages() {
@@ -142,6 +130,7 @@ $(document).ready(function() {
 
 		// Draw our line between the images
 		context.beginPath();
+		context.lineWidth = '2';
 		context.moveTo( sXY.x, sXY.y );
 		context.lineTo( pXY.x, pXY.y );
 		context.setLineDash([5, 5]);
@@ -153,7 +142,6 @@ $(document).ready(function() {
 			context.beginPath();
 			context.moveTo(zSet.sx,zSet.sy);
 			context.lineTo(zSet.px,zSet.py);
-			context.lineWidth = '4';
 			context.strokeStyle="black";
 			context.stroke();
 		}
@@ -185,13 +173,16 @@ $(document).ready(function() {
 	}
 
 	function displayZeroSet() {
-
 		// Look up Tenary Operators
 		isZSetActive = isZSetActive ? false : true;
-		zSet.sx = sources.station.x + (imgSize.x / 2);
-		zSet.sy = sources.station.y + imgSize.y;
-		zSet.px = sources.prism.x + (imgSize.x / 2);
-		zSet.py = sources.prism.y + (imgSize.y / 2);
+
+		var szXY = getStationXY();
+		var pzXY = getPrismXY();
+
+		zSet.sx = szXY.x;
+		zSet.sy = szXY.y;
+		zSet.px = pzXY.x;
+		zSet.py = pzXY.y;
 	}
 
 });
