@@ -13,6 +13,8 @@ $(document).ready(function() {
 		CP1: { x: 200, y: 350 },
 		CP2: { x: 200, y: 80 }
 	};
+	var zSet = { sx: 0, sy: 0, px: 0, py: 0};
+	var isZSetActive = false;
 	var imgSize = {x: 46, y: 46};
 	var mouse = { xOff: 0, yOff: 0 };
 	var intervalId = 0;
@@ -20,10 +22,12 @@ $(document).ready(function() {
 	var isDrag = false;
 	var mSelect;
 
+
 	// draw canvas.
 	initialize();
 
 	function isOverImage(sName){
+		if(isZSetActive && sName === "station" ){ return false; }
 		if(mouse.x >= sources[sName].x && mouse.x <= (sources[sName].x + imgSize.x)){
 			if(mouse.y >= sources[sName].y && mouse.y <= (sources[sName].y + imgSize.y)){
 				return true;
@@ -76,6 +80,9 @@ $(document).ready(function() {
 		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
 		// Register an event listener to resize window
 		window.addEventListener('resize', resizeCanvas, false);
+		// Listen for clicking out zeroset button
+		var zeroSet = document.getElementById("zeroSet");
+		zeroSet.addEventListener( 'click', displayZeroSet, true );
 
 		// Add our own mouse events
 		canvas.onmousedown = mDown;
@@ -105,19 +112,6 @@ $(document).ready(function() {
 			context.font = "15px Arial";
 			context.fillText(cp, control[cp].x + 10, control[cp].y);
 		}
-
-		// context.strokeStyle = 'blue';
-		// context.lineWidth = '4';
-		// context.strokeRect(0, 0, window.innerWidth, window.innerHeight);
-		// context.beginPath();
-		// context.arc(200, 80, 3, 0, 5 * Math.PI);
-		// context.label ='CP1';
-		// context.arc(200, 350, 3, 0, 5 * Math.PI);
-		// context.fill();
-		// context.font = "15px Arial";
-		// context.fillText(" CP2", 160, 90);
-		// context.font = "15px Arial";
-		// context.fillText(" CP1", 160, 360);
 	}
 
 	function loadImages() {
@@ -136,11 +130,21 @@ $(document).ready(function() {
 
 		// Draw our line between the images
 		context.beginPath();
+		context.lineWidth = '2';
 		context.moveTo( sXY.x, sXY.y );
 		context.lineTo( pXY.x, pXY.y );
 		context.setLineDash([5, 5]);
 		context.strokeStyle="blue";
 		context.stroke();
+
+		if(isZSetActive) {
+			// Draw our zeroSet
+			context.beginPath();
+			context.moveTo(zSet.sx,zSet.sy);
+			context.lineTo(zSet.px,zSet.py);
+			context.strokeStyle="black";
+			context.stroke();
+		}
 	}
 
 	function getPrismXY(){
@@ -167,5 +171,19 @@ $(document).ready(function() {
 	function clearCanvas() {
 		context.clearRect(0, 0, canvas.width, canvas.height)
 	}
+
+	function displayZeroSet() {
+		// Look up Tenary Operators
+		isZSetActive = isZSetActive ? false : true;
+
+		var szXY = getStationXY();
+		var pzXY = getPrismXY();
+
+		zSet.sx = szXY.x;
+		zSet.sy = szXY.y;
+		zSet.px = pzXY.x;
+		zSet.py = pzXY.y;
+	}
+
 });
 
