@@ -21,6 +21,11 @@ $(document).ready(function() {
 	// Start listening to resize events and
 	var isDrag = false;
 	var mSelect;
+	var x1 = sources.prism.x + (imgSize.x / 2);
+	var y1 = sources.prism.y + (imgSize.y / 2);
+	var x2 = sources.station.x + (imgSize.x / 2);
+	var y2 = sources.station.y + (imgSize.y / 2);
+	
 
 
 	// draw canvas.
@@ -96,6 +101,7 @@ $(document).ready(function() {
 		clearCanvas();
 		controlPoints();
 		loadImages();
+		distance();
 		console.log(intervalId);
 	}
 
@@ -113,10 +119,19 @@ $(document).ready(function() {
 			context.fillText(cp, control[cp].x + 10, control[cp].y);
 		}
 	}
+	
+	function distance() {
+// 		var d = Math.sqrt((x2-=x1)*x2+(y2-=y1)*y2);
+		var dx = (sources.prism.x + (imgSize.x / 2) - sources.station.x + (imgSize.x / 2));
+		var dy = (sources.prism.y + (imgSize.y / 2) - sources.station.y + (imgSize.y + 2));
+		var d = Math.sqrt((dx*dx) + (dy*dy));
+		d = Math.round((d * 100) / 100).toFixed(2);
+		document.getElementById("dist").innerHTML = d / 12;
+	}
 
 	function loadImages() {
 		var drawIt = function(img,n){
-				context.drawImage(img, n.x, n.y, imgSize.x, imgSize.y);
+			context.drawImage(img, n.x, n.y, imgSize.x, imgSize.y);
 		};
 		// get num of sources
 		for(var n in sources) {
