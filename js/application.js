@@ -22,15 +22,34 @@ $(document).ready(function() {
 	var isDrag = false;
 	var mSelect;
 	var disDisplay = document.getElementById("dist");
+	var angDisplay = document.getElementById("angle");
 	var x1 = sources.prism.x + (imgSize.x / 2);
 	var y1 = sources.prism.y + (imgSize.y / 2);
 	var x2 = sources.station.x + (imgSize.x / 2);
 	var y2 = sources.station.y + (imgSize.y / 2);
 
-
-
 	// draw canvas.
 	initialize();
+
+	function angle() {
+
+		if(isZSetActive){
+			var A = getPrismXY();
+			var B = getStationXY();
+			var C = {x: zSet.px, y: zSet.py};
+
+			var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
+			var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
+			var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+			angDisplay.innerHTML = radianToDegrees( Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) );
+		} else {
+			angDisplay.innerHTML = "N/A";
+		}
+	}
+
+	function radianToDegrees(r){
+		return r * (180/3.14159);
+	}
 
 	function isOverImage(sName){
 		if(isZSetActive && sName === "station" ){ return false; }
@@ -76,33 +95,12 @@ $(document).ready(function() {
 		mouse.y = evt.clientY - rect.top;
 	}
 
-	function initialize() {
-		// the window is resized.
-		resizeCanvas();
-
-		// Add event listener to get out mouse position
-		canvas.addEventListener('mousemove', function(evt) { getMousePos(evt); });
-		// Block text selection on doubleclick
-		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
-		// Register an event listener to resize window
-		window.addEventListener('resize', resizeCanvas, false);
-		// Listen for clicking out zeroset button
-		var zeroSet = document.getElementById("zeroSet");
-		zeroSet.addEventListener( 'click', displayZeroSet, true );
-
-		// Add our own mouse events
-		canvas.onmousedown = mDown;
-		canvas.onmouseup = mUp;
-
-		// Draw canvas border for the first time.
-		intervalId = setInterval(draw, 10);
-	}
-
 	function draw() {
 		clearCanvas();
 		controlPoints();
 		loadImages();
 		distance();
+		angle();
 		console.log(intervalId);
 	}
 
@@ -205,5 +203,26 @@ $(document).ready(function() {
 		zSet.py = pzXY.y;
 	}
 
+	function initialize() {
+		// the window is resized.
+		resizeCanvas();
+
+		// Add event listener to get out mouse position
+		canvas.addEventListener('mousemove', function(evt) { getMousePos(evt); });
+		// Block text selection on doubleclick
+		canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
+		// Register an event listener to resize window
+		window.addEventListener('resize', resizeCanvas, false);
+		// Listen for clicking out zeroset button
+		var zeroSet = document.getElementById("zeroSet");
+		zeroSet.addEventListener( 'click', displayZeroSet, true );
+
+		// Add our own mouse events
+		canvas.onmousedown = mDown;
+		canvas.onmouseup = mUp;
+
+		// Draw canvas border for the first time.
+		intervalId = setInterval(draw, 10);
+	}
 });
 
