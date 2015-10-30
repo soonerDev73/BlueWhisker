@@ -48,7 +48,8 @@ $(document).ready(function() {
 	}
 
 	function radianToDegrees(r){
-		return r * (180/3.14159);
+		var angle = ( r * (180/3.14159) );
+		return angle.toFixed(1);
 	}
 
 	function isOverImage(sName){
