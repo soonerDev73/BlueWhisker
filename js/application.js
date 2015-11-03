@@ -31,6 +31,18 @@ $(document).ready(function() {
 	// draw canvas.
 	initialize();
 
+	function snapToPoint(x,y){
+		var _buf = 10;
+		for(var _cp in control){
+			if( ( control[_cp].x + _buf >= x ) && ( control[_cp].x - _buf <= x ) ){
+				if( ( control[_cp].y + _buf >= y ) && ( control[_cp].y - _buf <= y ) ){
+					return {x: control[_cp].x, y: control[_cp].y};
+				}
+			}
+		}
+		return{x: x, y: y};
+	}
+
 	function angle() {
 
 		if(isZSetActive){
@@ -84,7 +96,7 @@ $(document).ready(function() {
 	}
 
 	function mUp(){
-		console.log("Mouse has been released at " + mouse.x + ", " + mouse.y);
+		// console.log("Mouse has been released at " + mouse.x + ", " + mouse.y);
 		isDrag = false;
 		canvas.onmousemove = null;
 		mSelect = null;
@@ -94,6 +106,7 @@ $(document).ready(function() {
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = evt.clientX - rect.left;
 		mouse.y = evt.clientY - rect.top;
+		snapToPoint(mouse.x,mouse.y);
 	}
 
 	function draw() {
