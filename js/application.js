@@ -4,7 +4,20 @@ $(document).ready(function() {
 	// using its id.
 	var canvas = document.getElementById('myCanvas');
 	var context = canvas.getContext('2d');
+
+	var disDisplay = document.getElementById("dist");
+	var angDisplay = document.getElementById("angle");
+
+	// Set our global variables
+	var isDrag = false;
+	var mSelect = null;
+	var zSet = { sx: 0, sy: 0, px: 0, py: 0};
+	var isZSetActive = false;
+	var mouse = { xOff: 0, yOff: 0 };
+	var intervalId = 0;
+
 	// Our image resources
+	var imgSize = {x: 46, y: 46};
 	var sources = {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
@@ -13,41 +26,66 @@ $(document).ready(function() {
 		CP1: { x: 200, y: 350 },
 		CP2: { x: 200, y: 80 }
 	};
-	var zSet = { sx: 0, sy: 0, px: 0, py: 0};
-	var isZSetActive = false;
-	var imgSize = {x: 46, y: 46};
-	var mouse = { xOff: 0, yOff: 0 };
-	var intervalId = 0;
+
 	// Start listening to resize events and
-	var isDrag = false;
-	var mSelect;
-	var disDisplay = document.getElementById("dist");
-	var angDisplay = document.getElementById("angle");
 	var x1 = sources.prism.x + (imgSize.x / 2);
 	var y1 = sources.prism.y + (imgSize.y / 2);
 	var x2 = sources.station.x + (imgSize.x / 2);
 	var y2 = sources.station.y + (imgSize.y / 2);
 
-	// draw canvas.
-	initialize();
+	var getXY = {
+		station: 	function(){
+			return {
+				x: sources.station.x + (imgSize.x / 2),
+				y: sources.station.y + imgSize.y }
+			},
+		prism: 	function(){
+			return {
+				x: sources.prism.x + (imgSize.x / 2),
+				y: sources.prism.y + (imgSize.y / 2)
+			}
+		}
+	};
 
-	function snapToPoint(x,y){
-		var _buf = 10;
+	var getTopLeft = {
+		station: 	function(s){
+			return {
+				x: s.x - (imgSize.x / 2),
+				y: s.y - imgSize.y }
+			},
+		prism: 	function(p){
+			return {
+				x: p.x - (imgSize.x / 2),
+				y: p.y - (imgSize.y / 2)
+			}
+		}
+	};
+
+	function snapToPoint(point){
+		var _buf = 15;
 		for(var _cp in control){
-			if( ( control[_cp].x + _buf >= x ) && ( control[_cp].x - _buf <= x ) ){
-				if( ( control[_cp].y + _buf >= y ) && ( control[_cp].y - _buf <= y ) ){
-					return {x: control[_cp].x, y: control[_cp].y};
+			if( isOverImage(mSelect) ){
+				if( distance(control[_cp],point) <= _buf ) {
+					return getTopLeft[mSelect]({ x: control[_cp].x, y: control[_cp].y});
 				}
 			}
 		}
-		return{x: x, y: y};
+		return {x: (mouse.x - mouse.xOff), y: (mouse.y - mouse.yOff)};
+	}
+
+	function mMove(e){
+		if(isDrag){
+			var sCor = snapToPoint( getXY[mSelect]() );
+			sources[mSelect].x = sCor.x;
+			sources[mSelect].y = sCor.y;
+		}
 	}
 
 	function angle() {
 
 		if(isZSetActive){
-			var A = getPrismXY();
-			var B = getStationXY();
+			var A = getXY["prism"]();
+			var B = getXY["station"]();
 			var C = {x: zSet.px, y: zSet.py};
 
 			var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
@@ -72,13 +110,6 @@ $(document).ready(function() {
 			}
 		}
 		return false;
-	}
-
-	function mMove(e){
-		if(isDrag){
-			sources[mSelect].x = mouse.x - mouse.xOff;
-			sources[mSelect].y = mouse.y - mouse.yOff;
-		}
 	}
 
 	function mDown(){
@@ -106,14 +137,13 @@ $(document).ready(function() {
 		var rect = canvas.getBoundingClientRect();
 		mouse.x = evt.clientX - rect.left;
 		mouse.y = evt.clientY - rect.top;
-		snapToPoint(mouse.x,mouse.y);
 	}
 
 	function draw() {
 		clearCanvas();
 		controlPoints();
 		loadImages();
-		distance();
+		disDisplay.innerHTML = pretendDistance( distance( getXY["station"](), getXY["prism"]() ) );
 		angle();
 		console.log(intervalId);
 	}
@@ -133,17 +163,17 @@ $(document).ready(function() {
 		}
 	}
 
-	function distance() {
-		var dsXY = getStationXY();
-		var dpXY = getPrismXY();
-
+	function distance(dsXY,dpXY) {
 		var dx = dpXY.x - dsXY.x;
 		var dy = dpXY.y - dsXY.y;
 
 		var d = Math.sqrt((dx*dx) + (dy*dy));
-		// d = Math.round((d * 100) / 100).toFixed(2);
-		d = d / 12;
-		disDisplay.innerHTML = d.toFixed(2);
+		return d.toFixed(0);
+	}
+
+	function pretendDistance(d){
+		d = d / 10;
+		return d.toFixed(2)
 	}
 
 	function loadImages() {
@@ -157,8 +187,8 @@ $(document).ready(function() {
 			image.onload = drawIt(image, sources[n]);
 		}
 
-		var sXY = getStationXY();
-		var pXY = getPrismXY();
+		var sXY = getXY["station"]();
+		var pXY = getXY["prism"]();
 
 		// Draw our line between the images
 		context.beginPath();
@@ -179,19 +209,6 @@ $(document).ready(function() {
 		}
 	}
 
-	function getPrismXY(){
-		return {
-			x: sources.prism.x + (imgSize.x / 2),
-			y: sources.prism.y + (imgSize.y / 2)
-		}
-	}
-
-	function getStationXY(){
-		return {
-			x: sources.station.x + (imgSize.x / 2),
-			y: sources.station.y + imgSize.y }
-	}
-
 	// Runs each time the DOM window resize event fires.
 	// Resets the canvas dimensions to match window,
 	// then draws the new borders accordingly.
@@ -208,8 +225,8 @@ $(document).ready(function() {
 		// Look up Tenary Operators
 		isZSetActive = isZSetActive ? false : true;
 
-		var szXY = getStationXY();
-		var pzXY = getPrismXY();
+		var szXY = getXY["station"]();
+		var pzXY = getXY["prism"]();
 
 		zSet.sx = szXY.x;
 		zSet.sy = szXY.y;
@@ -238,5 +255,9 @@ $(document).ready(function() {
 		// Draw canvas border for the first time.
 		intervalId = setInterval(draw, 10);
 	}
+
+	// draw canvas.
+	initialize();
+
 });
 
