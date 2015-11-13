@@ -88,6 +88,15 @@ $(document).ready(function() {
 			sources[mSelect].y = sCor.y;
 		}
 	}
+	
+	function convertDDToDMS(dd)
+	{
+		var deg = dd | 0;
+		var frac = Math.abs(dd - deg);
+		var min = (frac * 60) | 0;
+		var sec = frac * 3600 - min * 60;
+		return deg + "d " + min + "' " + sec + "\"";
+	}
 
 	function angle() {
 
