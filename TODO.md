@@ -4,3 +4,4 @@
 * Visual time feedback on level (Mr. Taylor)
 * Reset button (Mr. Ronel)
 * Degrees, Minutes, Seconds (Mr. McKinstry)
+* Add simple calculator (Mr. Orellana Jr.)
