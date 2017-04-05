@@ -88,14 +88,14 @@ $(document).ready(function() {
 			sources[mSelect].y = sCor.y;
 		}
 	}
-	
-	function convertDDToDMS(dd)
-	{
-		var deg = dd | 0;
-		var frac = Math.abs(dd - deg);
-		var min = (frac * 60) | 0;
-		var sec = frac * 3600 - min * 60;
-		return deg + "d " + min + "' " + sec + "\"";
+
+	function convertDDToDMS(dd){
+		let posObject = {}
+		posObject.deg = Math.floor(dd);
+		let frac = Math.abs(dd - posObject.deg);
+		posObject.minutes = Math.abs(frac * 60) | 0;
+		posObject.seconds = Math.abs(frac * 3600 - posObject.minutes * 60) | 0;
+		return posObject;
 	}
 
 	function convertDDToDMS(dd){
@@ -319,6 +319,6 @@ $(document).ready(function() {
 	}
 
 	// draw canvas.
-	initialize();
+	// initialize();
 
 });
