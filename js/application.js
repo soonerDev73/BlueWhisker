@@ -30,10 +30,8 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
-	var control = {
-		CP1: { x: 200, y: 350 },
-		CP2: { x: 200, y: 80 }
-	};
+
+	
 
 	// Start listening to resize events and
 	var x1 = sources.prism.x + (imgSize.x / 2);
@@ -198,7 +196,7 @@ $(document).ready(function() {
 		loadImages();
 		disDisplay.innerHTML = pretendDistance( distance( getXY["station"](), getXY["prism"]() ) );
 		angle();
-		console.log(intervalId);
+		//console.log(intervalId);
 	}
 
 	// Display custom canvas.
@@ -287,6 +285,48 @@ $(document).ready(function() {
 		zSet.py = pzXY.y;
 	}
 
+// Set initial question set control points
+	var control = {
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 80 }
+	};
+
+
+function changetoNextQuestion(arrNum) {
+	//sets the page's active control points to whatever number is passed to arrNum
+	controlArray = [
+		{
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 100 },
+		CP3: { x: 450, y: 350 },
+		CP4: {x: 450, y: 100 }
+	},
+		{
+		CP1: { x: 600, y: 250 },
+		CP2: { x: 300, y: 90 },
+		CP3: {x: 100, y: 200}
+	}
+	]
+		control = controlArray[arrNum];
+}
+
+var questionNumber = 0
+function isCorrect() {
+	// Runs to change to the next set of control points
+	clearCanvas();
+	if (questionNumber > 0 ) {
+		questionNumber += 1 
+	}
+	changetoNextQuestion(questionNumber);
+}
+
+// Temp button on index.html to test isCorrect function changes control points
+var nextQuestionBtn = document.getElementById('nextQuestionBtn');
+nextQuestionBtn.addEventListener("click", function() {
+	isCorrect();
+})
+
+
 	function initialize() {
 		// the window is resized.
 		resizeCanvas();
@@ -313,3 +353,6 @@ $(document).ready(function() {
 	initialize();
 
 });
+
+// Show the current active page
+// var activePage = $.mobile.activePage[0].id
