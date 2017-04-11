@@ -101,15 +101,16 @@ $(document).ready(function() {
 	function angle() {
 
 		if(isZSetActive){
-			var A = getXY["prism"]();
-			var B = getXY["station"]();
-			var C = {x: zSet.px, y: zSet.py};
+			let A = getXY["prism"]();
+			let B = getXY["station"]();
+			let C = {x: zSet.px, y: zSet.py};
 
-			var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
-			var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
-			var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
+			let AB = Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2);
+			let BC = Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2);
+			let AC = Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2);
 
-			let angle = convertDDToDMS(radianToDegrees( Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) ))
+			let angle = convertDDToDMS(radianToDegrees(Math.acos((BC + AB - AC)/(2 * Math.sqrt(BC) * Math.sqrt(AB)))));
+
 			// console.log(angle);
 
 			angDisplay.innerHTML = `${angle.deg}&deg; ${angle.minutes}' ${angle.seconds}"`
