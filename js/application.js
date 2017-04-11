@@ -350,7 +350,7 @@ nextQuestionBtn.addEventListener("click", function() {
 	}
 
 	// draw canvas.
-	initialize();
+	// initialize();
 
 });
 
