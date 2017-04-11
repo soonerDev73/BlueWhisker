@@ -14,6 +14,11 @@
 		$(document).bind('mobileinit',function(){
 			$.mobile.pushStateEnabled = false;
 		});
+
+		function myFunction() {
+    		location.reload();
+
+		}
 	</script>
 	<script src="js/jquery.mobile-1.4.5.js"></script>
 	<script src="js/application.js"></script>
@@ -46,6 +51,7 @@
 			<div id="controls">
 				<a href="#popUpDiv" data-rel="popup">Instructions</a>
 				<a href="#calculator" data-rel="popup">Calculator</a>
+				<a href="#ResetButton" data-rel="popup">Reset Button</a>
 				<a id="zeroSet" href="#">Zero Set</a>
 				<span>Distance: <span id="dist">0.0</span></span>
 				<span>Angle: <span id="angle">N/A</span></span>
@@ -91,6 +97,18 @@
 				</tr>
 			</table>
 			</form>
+		<div data-role="popup" id="ResetButton">
+			<body>
+				<button onclick="myFunction()">Reset</button>
+			</body>
+		</div>
+		<div data-role="popup" id="popUpDiv">
+			<p>Instructions</p>
+			<p>The 2 points are control points.</p>
+			<p>Set up on Control Point 1.</p>
+			<p>Use Control Point 2 as the back sight.</p>
+			<p>Lay out point A 90 degrees from control line</p>
+			<p>and 25.00 feet from control point 1.</p>
 		</div>
 
 		<div data-role="popup" id="popUpDiv">
