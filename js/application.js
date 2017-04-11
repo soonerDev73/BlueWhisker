@@ -98,15 +98,6 @@ $(document).ready(function() {
 		return posObject;
 	}
 
-	function convertDDToDMS(dd){
-		let posObject = {}
-		posObject.deg = Math.floor(dd);
-		let frac = Math.abs(dd - posObject.deg);
-		posObject.minutes = Math.abs(frac * 60) | 0;
-		posObject.seconds = Math.abs(frac * 3600 - posObject.minutes * 60) | 0;
-		return posObject;
-	}
-
 	function angle() {
 
 		if(isZSetActive){
