@@ -30,4 +30,18 @@ html, body {
 	width: 100%;
 	z-index:2;
 }
-
+/*
+/* styling for 'Instuctions' menu 
+*/
+#popUpDiv h2 {
+	padding-top: 6px;
+	line-height: .4em;
+}
+#popUpDiv p {
+	line-height: ..6em;
+}
+#popUpDiv h2,
+#popUpDiv p {
+	margin-left: 0 !important;
+	padding-left: 12px;
+}

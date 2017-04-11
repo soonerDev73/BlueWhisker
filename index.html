@@ -28,9 +28,9 @@
 		</div>
 		<div data-role="main" class="ui-content" align="center">
 			<h2>Key:</h2>
-			<img src="images/SymbolOfSurveyingTotalStation.png" height="40px" width="40px">  This is your Total Station.</img>
+			<img src="images/SymbolOfSurveyingTotalStation.png" height="40px" width="40px">This is your Total Station.</img>
 			</br></br>
-			<img src="images/Prism.png" height="40px" width="40px">      This is your Prism.</img>
+			<img src="images/Prism.png" height="40px" width="40px">This is your Prism.</img>
 			</br></br>
 			<h4>Drag and drop the tools to use!</h4>
 			</br></br>
@@ -47,17 +47,38 @@
 				<a id="zeroSet" href="#">Zero Set</a>
 				<span>Distance: <span id="dist">0.0</span></span>
 				<span>Angle: <span id="angle">N/A</span></span>
+				<h5 id="demo"></h5>	
 			</div>
 		</div>
-		<div data-role="popup" id="popUpDiv">
-			<p>Instructions</p>
-			<p>The 2 points are control points.</p>
-			<p>Set up on Control Point 1.</p>
-			<p>Use Control Point 2 as the back sight.</p>
-			<p>Lay out point A 90 degrees from control line</p>
-			<p>and 25.00 feet from control point 1.</p>
-		</div>
 
+		<div data-role="popup" id="popUpDiv">
+			<h2>Instructions</h2>
+			<p>CP1 & CP2 are the control points </p>
+			<table>
+				<tr>
+					<th>Done?</th>
+					<th>Task</th>
+				</tr>
+				<tr>
+					<td id="checkoff1"></td>
+					<td>Set up on Control Point 1</td>
+				</tr>
+				<tr>
+					<td id="checkoff2"></td>
+					<td>Use Control Point 2 as the back sight</td>
+				</tr>
+				<tr>
+					<td id="checkoff3"></td>
+					<td>Lay out point A 90 degrees from control line</td>
+				</tr>
+				<tr>
+					<td id="checkoff4"></td>
+					<td>and 25.00 feet from control point 1</td>
+				</tr>
+			</table>
+
+		</div>
 	</div>
+
 </body>
 </html>
