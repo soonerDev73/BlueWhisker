@@ -1,7 +1,10 @@
 ## Task List by Priority
 
-* Instructions with visual feedback on completion (Mr Kline)
-* Visual time feedback on level (Mr. Taylor)
-* Reset button (Mr. Ronel)
-* Degrees, Minutes, Seconds (Mr. McKinstry)
-* Add simple calculator (Mr. Orellana Jr.)
+* Fine Tuning Controls (Carson McKinstry)
+* Scale (Kelley Douglass)
+* Timer (Clint Taylor)
+* Level III (Ronel Peter)
+* Finishing Checks (Daniel Kline) - UI Update
+* Set Stakes (Katie Scruggs)
+* UI Update (Tony Karanja)
+* Trig Functions (Jose Orellana Jr?)
