@@ -31,7 +31,7 @@ $(document).ready(function() {
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
 
-	
+
 
 	// Start listening to resize events and
 	var x1 = sources.prism.x + (imgSize.x / 2);
@@ -315,7 +315,7 @@ function isCorrect() {
 	// Runs to change to the next set of control points
 	clearCanvas();
 	if (questionNumber > 0 ) {
-		questionNumber += 1 
+		questionNumber += 1
 	}
 	changetoNextQuestion(questionNumber);
 }
@@ -350,7 +350,7 @@ nextQuestionBtn.addEventListener("click", function() {
 	}
 
 	// draw canvas.
-	// initialize();
+	initialize();
 
 });
 
