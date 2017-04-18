@@ -8,6 +8,14 @@ $(document).ready(function() {
 	var disDisplay = document.getElementById("dist");
 	var angDisplay = document.getElementById("angle");
 
+	var instructionCheckoffCounter = 1;
+	// var checkoffItemsDone = {
+	// 	setUpCtrlPnt1 : false,
+	// 	useCtrlPnt2AsBackSight : false,
+	// 	layOutPntA90DegfromCntlLine : false,
+	// 	layOutPntA25FtfromCntlPnt1 : false
+	// };
+
 	// Set our global variables
 	var isDrag = false;
 	var mSelect = null;
@@ -22,10 +30,8 @@ $(document).ready(function() {
 		station: { src: 'images/SymbolOfSurveyingTotalStation.png', x: 10, y: 25 },
 		prism: { src: 'images/Prism.png', x: 10, y: 100 }
 	};
-	var control = {
-		CP1: { x: 200, y: 350 },
-		CP2: { x: 200, y: 80 }
-	};
+
+
 
 	// Start listening to resize events and
 	var x1 = sources.prism.x + (imgSize.x / 2);
@@ -81,17 +87,31 @@ $(document).ready(function() {
 		}
 	}
 
+	function convertDDToDMS(dd){
+		let posObject = {}
+		posObject.deg = Math.floor(dd);
+		let frac = Math.abs(dd - posObject.deg);
+		posObject.minutes = Math.abs(frac * 60) | 0;
+		posObject.seconds = Math.abs(frac * 3600 - posObject.minutes * 60) | 0;
+		return posObject;
+	}
+
 	function angle() {
 
 		if(isZSetActive){
-			var A = getXY["prism"]();
-			var B = getXY["station"]();
-			var C = {x: zSet.px, y: zSet.py};
+			let A = getXY["prism"]();
+			let B = getXY["station"]();
+			let C = {x: zSet.px, y: zSet.py};
 
-			var AB = Math.sqrt(Math.pow(B.x-A.x,2)+ Math.pow(B.y-A.y,2));
-			var BC = Math.sqrt(Math.pow(B.x-C.x,2)+ Math.pow(B.y-C.y,2));
-			var AC = Math.sqrt(Math.pow(C.x-A.x,2)+ Math.pow(C.y-A.y,2));
-			angDisplay.innerHTML = radianToDegrees( Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB)) );
+			let AB = Math.pow(B.x - A.x, 2) + Math.pow(B.y - A.y, 2);
+			let BC = Math.pow(B.x - C.x, 2) + Math.pow(B.y - C.y, 2);
+			let AC = Math.pow(C.x - A.x, 2) + Math.pow(C.y - A.y, 2);
+
+			let angle = convertDDToDMS(radianToDegrees(Math.acos((BC + AB - AC)/(2 * Math.sqrt(BC) * Math.sqrt(AB)))));
+
+			// console.log(angle);
+
+			angDisplay.innerHTML = `${angle.deg}&deg; ${angle.minutes}' ${angle.seconds}"`
 		} else {
 			angDisplay.innerHTML = "N/A";
 		}
@@ -115,6 +135,7 @@ $(document).ready(function() {
 	function mDown(){
 		for(var src in sources){
 			if(isOverImage(src)){
+
 				mouse.xOff = mouse.x - sources[src].x;
 				mouse.yOff = mouse.y - sources[src].y;
 
@@ -126,11 +147,41 @@ $(document).ready(function() {
 		}
 	}
 
+	function displayCheckedOffItem() {
+		// this function places a checkmark off of each item in the instructions menu as each are done
+		switch (instructionCheckoffCounter) {
+			case 1:
+				document.getElementById('checkoff1').innerHTML = 'done';
+				console.log(document.getElementById('demo').innerHTML = 'got first point');
+				instructionCheckoffCounter++;
+				break;
+			case 2:
+				document.getElementById('checkoff2').innerHTML = 'done';
+				console.log(document.getElementById('demo').innerHTML = 'got second point');
+				instructionCheckoffCounter++;
+				break;
+			case 3:
+				document.getElementById('checkoff3').innerHTML = 'done';
+				console.log(document.getElementById('demo').innerHTML = 'got third point');
+				instructionCheckoffCounter++;
+				break;
+			case 4:
+				document.getElementById('checkoff4').innerHTML = 'done';
+				console.log(document.getElementById('demo').innerHTML = 'got fourth point');
+				instructionCheckoffCounter++;
+				break;
+			default:
+				// the other conditions were not met, therefore break (out a little break dance)
+				break;
+		}
+	}
+
 	function mUp(){
 		// console.log("Mouse has been released at " + mouse.x + ", " + mouse.y);
 		isDrag = false;
 		canvas.onmousemove = null;
 		mSelect = null;
+		displayCheckedOffItem();
 	}
 
 	function getMousePos(evt) {
@@ -145,7 +196,7 @@ $(document).ready(function() {
 		loadImages();
 		disDisplay.innerHTML = pretendDistance( distance( getXY["station"](), getXY["prism"]() ) );
 		angle();
-		console.log(intervalId);
+		//console.log(intervalId);
 	}
 
 	// Display custom canvas.
@@ -234,6 +285,48 @@ $(document).ready(function() {
 		zSet.py = pzXY.y;
 	}
 
+// Set initial question set control points
+	var control = {
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 80 }
+	};
+
+
+function changetoNextQuestion(arrNum) {
+	//sets the page's active control points to whatever number is passed to arrNum
+	controlArray = [
+		{
+		CP1: { x: 200, y: 350 },
+		CP2: { x: 200, y: 100 },
+		CP3: { x: 450, y: 350 },
+		CP4: {x: 450, y: 100 }
+	},
+		{
+		CP1: { x: 600, y: 250 },
+		CP2: { x: 300, y: 90 },
+		CP3: {x: 100, y: 200}
+	}
+	]
+		control = controlArray[arrNum];
+}
+
+var questionNumber = 0
+function isCorrect() {
+	// Runs to change to the next set of control points
+	clearCanvas();
+	if (questionNumber > 0 ) {
+		questionNumber += 1
+	}
+	changetoNextQuestion(questionNumber);
+}
+
+// Temp button on index.html to test isCorrect function changes control points
+var nextQuestionBtn = document.getElementById('nextQuestionBtn');
+nextQuestionBtn.addEventListener("click", function() {
+	isCorrect();
+})
+
+
 	function initialize() {
 		// the window is resized.
 		resizeCanvas();
@@ -261,3 +354,5 @@ $(document).ready(function() {
 
 });
 
+// Show the current active page
+// var activePage = $.mobile.activePage[0].id

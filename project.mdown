@@ -1,0 +1,33 @@
+project
+OU Phd candidate project
+Matt Reyes
+
+Blue Wisker
+HTML5 Canvas
+Surveying
+
+simple now
+calculates angles
+
+
+needs back end
+
+jQuery Mobile
+-dynamic resizing
+
+agile scrum
+-daily meeting workflow
+
+
+me
+-format instruction box
+
+
+start new pjt 
+-call repo
+-git clone (checkout)
+-cd into new forlder
+-git checkout -b name-of-branch (-b makes the branch and create)
+-git push --set-upstream name-of-branch
+
+do updates on braches
